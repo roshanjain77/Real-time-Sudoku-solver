@@ -5,6 +5,8 @@ from keras.models import load_model
 from tensorflow.keras.utils import normalize
 
 
+from copy import deepcopy
+
 MARGIN = 4
 CELL = 28 + 2 * MARGIN
 OUTER_DIM = 9 * CELL
@@ -15,8 +17,8 @@ KERNEL5 = np.ones((5, 5), np.uint8)
 KERNEL7 = np.ones((7, 7), np.uint8)
 
 
-# model = load_model('Keras-Models/CNN+BN+DA')
-model = load_model('Keras-Models/digit_model.h5')
+model = load_model('Keras-Models/CNN+BN+DA-5')
+# model2 = load_model('Keras-Models/digit_model.h5')
 
 
 def getSudokuboard(rois):
@@ -24,9 +26,16 @@ def getSudokuboard(rois):
     data = np.array(rois).reshape(-1, 28, 28, 1)
 
     data = data/255.0
+    # data2 = deepcopy(data)
+    
     preds = model.predict(data)
+    # preds2 = model2.predict(data2)
     
     board = np.argmax(preds, axis=1).reshape(9, 9)
+    # board2 = np.argmax(preds2, axis=1).reshape(9, 9)
+
+    # print(board, board2)
+    
     
     return board
 
@@ -103,7 +112,7 @@ def frameArea(area):
         
     return Area, loc
 
-# x = cv2.imread('cells/img-01.png', 0)
+# x = cv2.imread('development/cells/img-07.png', 0)
 # rois = [[x for i in range(9)] for i in range(9)]
 
 # board = getSudokuboard(rois)
